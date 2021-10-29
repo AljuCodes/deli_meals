@@ -1,4 +1,5 @@
 import 'package:deli_meals/models/meal.dart';
+import 'package:deli_meals/screens/meal_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class MealItem extends StatelessWidget {
@@ -7,21 +8,56 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
+  final String id;
 
-  void selectmeal() {}
-  const MealItem({
-    Key? key,
-    required this.title,
-    required this.imageUrl,
-    required this.affordability,
-    required this.complexity,
-    required this.duration,
-  }) : super(key: key);
+  void selectmeal(BuildContext context) {
+    Navigator.of(context).pushNamed(MealDetailScreen.routeName, arguments: id);
+  }
+
+  const MealItem(
+      {Key? key,
+      required this.title,
+      required this.imageUrl,
+      required this.affordability,
+      required this.complexity,
+      required this.duration,
+      required this.id})
+      : super(key: key);
+
+  String get complexityText {
+    switch (complexity) {
+      case Complexity.Simple:
+        return 'simple';
+
+      case Complexity.Challenging:
+        return 'Challenging';
+
+      case Complexity.Hard:
+        return 'hard';
+      default:
+        return 'Unknow';
+    }
+  }
+
+  String get affordabilityText {
+    switch (affordability) {
+      case Affordability.Affordable:
+        return 'affordable';
+
+      case Affordability.Pricey:
+        return 'Pricey';
+
+      case Affordability.Luxurious:
+        return 'Luxurious';
+      default:
+        return 'Unknow';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: selectmeal,
+      onTap: () => selectmeal(context),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
@@ -47,18 +83,59 @@ class MealItem extends StatelessWidget {
                   bottom: 20,
                   right: 10,
                   child: Container(
+                    width: 250,
                     color: Colors.black54,
-                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Text(
-                      title,
-                      style: TextStyle(fontSize: 26, color: Colors.white),
-                      softWrap: true,
-                      overflow: TextOverflow.fade,
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(
+                        title,
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.white),
+                        softWrap: true,
+                        overflow: TextOverflow.fade,
+                      ),
                     ),
                   ),
                 ),
               ],
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.schedule),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Text('$duration min'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.work),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Text(complexityText),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.attach_money),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Text(affordabilityText),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
