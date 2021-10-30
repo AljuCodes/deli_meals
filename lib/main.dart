@@ -1,6 +1,8 @@
 import 'package:deli_meals/screens/categories_screen.dart';
 import 'package:deli_meals/screens/category_meals_screen.dart';
+import 'package:deli_meals/screens/filtered_screen.dart';
 import 'package:deli_meals/screens/meal_detail_screen.dart';
+import 'package:deli_meals/screens/tab_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -35,13 +37,16 @@ class MyApp extends StatelessWidget {
       ),
       // home: const CategoriesScreen(),
       routes: {
-        '/': (ctx) => const CategoriesScreen(),
+        '/': (ctx) => const TabsScreen(),
+        CategoriesScreen.routeName: (ctx) => const CategoriesScreen(),
         CategoryMealsScreen.routeName: (ctx) => const CategoryMealsScreen(),
         MealDetailScreen.routeName: (ctx) => const MealDetailScreen(),
+        FiltersScreen.routeName: (ctx) => const FiltersScreen(),
+        TabsScreen.routeName: (ctx) => const TabsScreen()
       },
       onGenerateRoute: (settings) {
         // ignore: avoid_print
-        print(settings.arguments);
+        // print(settings.arguments);
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(builder: (ctx) => const CategoriesScreen());
